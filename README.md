@@ -54,6 +54,8 @@ Sistem ini merupakan **jam digital berbasis Arduino UNO** yang memiliki fitur ut
 
 ## Konfigurasi Pin
 
+![Rangkaian](./rangkaian.png)
+
 | Komponen            | Pin Arduino |
 | ------------------- | ----------- |
 | OLED SDA            | A4          |
