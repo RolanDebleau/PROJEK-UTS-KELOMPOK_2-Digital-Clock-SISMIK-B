@@ -95,94 +95,36 @@ Saat sistem dinyalakan:
 
 ### 2. Pembacaan Waktu (RTC)
 
-```cpp
-RTC_DS3231 rtc;
-
-if (rtc.lostPower()) {
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-}
-```
-
-**Penjelasan:**
-
-- RTC DS3231 membaca waktu secara real-time
-- Jika modul kehilangan daya (baterai habis), waktu disetel ulang otomatis sesuai waktu saat program dikompilasi
-- Waktu yang terbaca disimpan ke objek `DateTime`
+RTC akan mengambil data waktu secara realtime. Ini kemudian akan digunakan untuk mengakses waktu sekarang yang kemudian ditampilkan pada OLED
 
 ---
 
-### 3. Tampilan OLED
+### 3. Menampilkan Ke OLED
 
-```cpp
-void displayScreen(const DateTime tm, int md) {
-    display.setCursor(0, 0);
-    display.setTextSize(2);
-    display.print(tm.toString("hh:mm"));
-    display.display();
-}
-```
+OLED akan menampilkan jam berdasarkan data dari RTC. Data yang ditampilkan berupa:
 
-**Penjelasan:**
+- Jam
+- Tanggal
+- Bulan
+- Tahun
+- Presentase baterai
 
-- Kursor diposisikan di pojok kiri atas layar
-- Ukuran teks diset ke 2 (besar)
-- Waktu ditampilkan dalam format `hh:mm`
-- `display.display()` mengirim buffer ke layar fisik
+Saat mengatur alarm atau menekan tombol button beberapa saat, tampilan OLED akan berubah ke tampilan Set Alarm untuk mengatur ulang alarm.
 
 ---
 
-### 4. Mode Tampilan
+### 4. Set Alarm
 
-```cpp
-uint8_t mode = 0;
-```
+Mengatur ulang alarm. Saat pertama masuk ke Set Alarm, anda diminta untuk mengatur nilai jamnya dengan memutar knob dari rotary encoder dan tekan button untuk mengaturnya. Setelah jam, anda diminta ngatur menitnya. Sama seperti sebelumnya, putar knob dan tekan button untuk mengesetnya. Setelah keduanya di atur, tekan lagi button untuk menyimpan alarm ke memori EEPROM.
 
-Variabel `mode` digunakan untuk berpindah antar mode tampilan:
+### 5. Menunggu Output
 
-| Mode | Tampilan        |
-| ---- | --------------- |
-| 0    | Jam & Menit     |
-| 1    | Detik / Tanggal |
+Jika waktu saat ini sudah melewati waktu dari alarm. Buzzer akan berbunyi sebagai penanda dan akan berhenti jika buttonnya ditekan.
 
-Perpindahan mode dilakukan melalui push button yang terhubung ke pin digital Arduino.
+## Saran Peningkatan
 
----
-
-### 5. Loop Utama
-
-```cpp
-void loop() {
-    DateTime now = rtc.now();
-    displayScreen(now, 0);
-}
-```
-
-Setiap siklus loop:
-
-1. Membaca waktu terkini dari RTC
-2. Menampilkan waktu ke layar OLED
-3. Mengecek input tombol untuk pergantian mode
-
----
-
-## Cara Penggunaan
-
-1. Upload kode ke Arduino UNO menggunakan Arduino IDE
-2. Pastikan semua library sudah terinstall:
-   - `RTClib` by Adafruit
-   - `Adafruit GFX Library`
-   - `Adafruit SSD1306`
-   - `TimeLib` by Michael Margolis
-   - `Wire`
-   - `EEPROM`
-3. Hubungkan rangkaian sesuai konfigurasi pin di atas
-4. Nyalakan arduino(sambungkan dari baterai jika perlu), Oled akan menyala dan menampilkan jam, tanggal, bulan, tahun, persentase baterai
-5. Tombol digunakan untuk mengubah mode(Display Jam, Set Alarm) sekaligus mematikan alarm
-6. Rotary encoder digunakan untuk mengatur waktu alarm saat Set Alarm
-7. Jika waktu sekarang telah melewati waktu yang sudah di set alarm, Buzzer akan berbunyi sampai di tekan untuk mematikan
-
----
+- Baterai belum bisa digunakan karena masih memerlukan sebuah buck converter untuk menurunkan tegangan agar aman dan stabil untuk arduino.
 
 ## Dokumentasi
 
-[Youtube](test)
+[Youtube](https://youtu.be/BNchCGl8Irk)
