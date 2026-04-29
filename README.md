@@ -9,7 +9,7 @@
   6. Gerard Roland Kusuma Sarwoko         (H1H024047)
 
 ---
- 
+ .
 ## Deskripsi Proyek
  
 Sistem ini merupakan **jam digital berbasis Arduino UNO** yang memiliki fitur utama:
